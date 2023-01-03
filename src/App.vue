@@ -1,21 +1,14 @@
-<script setup>
-import { useSummation } from './composables/calcValues'
-
-const { summation, Sum } = useSummation()
-</script>
+<script setup></script>
 
 <template>
   <main>
     <section>
       <div>
-        <h1>Summation result:</h1>
-        <p>{{ summation }}</p>
+        <h1>Test Vue.js application using vitest:</h1>
       </div>
+
       <div>
-        <button @click="Sum([2, 3, 4])">Calc</button>
-      </div>
-      <div>
-        <RouterView></RouterView>
+        <router-view></router-view>
       </div>
     </section>
   </main>

@@ -1,26 +1,88 @@
 <template>
-  <div>
-    <div v-for="todo in todos" :key="todo.id" data-test="todo">
-      {{ todo.text }}
-    </div>
+  <section class="main-section">
+    <article class="text-center">
+      <BaseInput
+        data-test="search"
+        v-model="searchValue"
+        place-holder="Search todo..."
+      />
+    </article>
+    <article>
+      <TodoList :todo-list="computedFilterData" />
+    </article>
+    <article>
+      <form data-test="form" @submit.prevent="addToDo" class="form-container">
+        <BaseInput label="title" v-model="todo.title" />
 
-    <div>
-      <form data-test="form" @submit.prevent="createNewTodo">
-        <input type="text" data-test="new-todo" v-model="newToDo" />
+        <BaseInput label="Description" v-model="todo.description" />
+
+        <div>
+          <button id="btn-todo">Submit todo</button>
+        </div>
       </form>
-    </div>
-  </div>
+    </article>
+  </section>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import TodoList from '../components/ToDoList.vue'
+import BaseInput from '../components/BaseInput.vue'
+import { useTodo } from '../composables/useTodo'
 
-const todos = ref([{ id: 1, text: 'Learn vue.js 3', completed: false }])
+const {
+  status,
+  createToDo,
+  filterData,
+  todoList,
+  filteredToDo,
+  computedFilterData,
+  findData,
+} = useTodo()
 
-const newToDo = ref('')
+const todo = ref({ title: '', description: '' })
 
-// Create a new todo and add it to todos list
-const createNewTodo = () => {
-  todos.value.push({ id: 2, text: newToDo.value, completed: false })
+const searchValue = ref('')
+const todos = ref([])
+
+watch(searchValue, () => {
+  console.log('change search...', searchValue.value)
+  filterData(searchValue.value)
+})
+
+const addToDo = () => {
+  createToDo({
+    title: todo.value.title,
+    description: todo.value.description,
+  })
 }
 </script>
+
+<style scoped>
+section {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 2rem;
+}
+
+article {
+  display: flex;
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+#btn-todo {
+  background-color: green;
+  color: white;
+  margin-top: 2rem;
+}
+article.text-center {
+  display: flex;
+  justify-content: center;
+}
+</style>
