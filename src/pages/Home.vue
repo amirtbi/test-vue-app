@@ -1,5 +1,8 @@
 <template>
   <section class="main-section">
+    <Show show />
+    <p data-test="text">{{ text }}</p>
+    >
     <article class="text-center">
       <BaseInput
         data-test="search"
@@ -12,9 +15,16 @@
     </article>
     <article>
       <form data-test="form" @submit.prevent="addToDo" class="form-container">
-        <BaseInput label="title" v-model="todo.title" />
-
-        <BaseInput label="Description" v-model="todo.description" />
+        <div class="form-field">
+          <BaseInput data-test="title" label="title" v-model="todo.title" />
+        </div>
+        <div class="form-field">
+          <BaseInput
+            data-test="description"
+            label="Description"
+            v-model="todo.description"
+          />
+        </div>
 
         <div>
           <button id="btn-todo">Submit todo</button>
@@ -28,6 +38,7 @@
 import { ref, watch } from 'vue'
 import TodoList from '../components/ToDoList.vue'
 import BaseInput from '../components/BaseInput.vue'
+import Show from '../components/Show.vue'
 import { useTodo } from '../composables/useTodo'
 
 const {
@@ -42,6 +53,7 @@ const {
 
 const todo = ref({ title: '', description: '' })
 
+const text = ref('')
 const searchValue = ref('')
 const todos = ref([])
 
@@ -51,6 +63,7 @@ watch(searchValue, () => {
 })
 
 const addToDo = () => {
+  text.value = 'added'
   createToDo({
     title: todo.value.title,
     description: todo.value.description,

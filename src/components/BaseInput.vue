@@ -1,18 +1,14 @@
 <template>
-  <div class="form-field">
-    <label>{{ label }}</label>
-    <input
-      type="text"
-      :value="modelValue"
-      :placeholder="placeHolder"
-      @input="$emit('update:modelValue', $event.target.value)"
-    />
-  </div>
+  <input
+    type="text"
+    :value="modelValue"
+    :placeholder="placeHolder"
+    @input="$emit('update:modelValue', $event.target.value)"
+  />
 </template>
 
 <script setup>
 const props = defineProps({
-  label: { type: String },
   modelValue: { type: String },
   placeHolder: { type: String },
 })
